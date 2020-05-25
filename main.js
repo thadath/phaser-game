@@ -29,32 +29,42 @@ var mainState = {
         var top = this.myWorld.create(800, 350 -32, 'ground');
         top.scale.setTo(0.3, 1);
         top.body.immovable = true;
-        game.stage.backgroundColor = '#e26a6b';
-        game.add.sprite(0, 0, 'devahoy').anchor.setTo(0, 0); 
+        game.stage.backgroundColor = '#7dbcdf';
+        // game.add.sprite(0, 0, 'devahoy').anchor.setTo(0, 0); 
 
-        // this.player = game.add.sprite(0, 700, 'player');
-        // game.physics.arcade.enable(this.player);
+        this.player = game.add.sprite(0, 700, 'player');
+        game.physics.arcade.enable(this.player);
 
-        // this.player.body.bounce.y = 0.25;
-        // this.player.body.gravity.y = 980;
-        // this.player.body.collideWorldBounds = true;
+        this.player.body.bounce.y = 0.25;
+        this.player.body.gravity.y = 980;
+        this.player.body.collideWorldBounds = true;
 
-        // this.player.animations.add('right', [3, 4, 5], 10, true);
-        // this.player.animations.add('left', [9, 10, 11], 10, true);
+        this.player.animations.add('right', [3, 4, 5], 10, true);
+        this.player.animations.add('left', [9, 10, 11], 10, true);
 
-        // this.player.frame = 6;
+        this.player.frame = 6;
 
-        // this.cursors = this.input.keyboard.createCursorKeys();
+        this.cursors = this.input.keyboard.createCursorKeys();
 
-        // this.coins = game.add.group();
-        // this.coins.enableBody = true;
-        // this.spawnCoins();
+        this.coins = game.add.group();
+        this.coins.enableBody = true;
+        this.spawnCoins();
+
+        this.score = 0;
+        this.scoreText;
+      
+        this.scoreText = game.add.text(16, 16, 'Score : ' + this.score, {
+          fontSize: '20px',
+          fill: '#ed3465'
+        });
 
     },
 
 	update: function() {
         game.physics.arcade.collide(this.player, this.myWorld);
         game.physics.arcade.enable(this.player);
+        game.physics.arcade.collide(this.coins, this.myWorld);
+
 
         if (this.cursors.right.isDown) {
 
@@ -78,6 +88,7 @@ var mainState = {
         this.player.frame = 6;
         this.player.body.touching.down
         }  
+        game.physics.arcade.overlap(this.player, this.coins, this.collectCoin, null, this);
     },
 
     spawnCoins: function() {
@@ -85,7 +96,7 @@ var mainState = {
             var x = this.rnd.integerInRange(0, game.world.width - 40);
             var y = this.rnd.integerInRange(0, game.world.height - 100);
 
-            this.conis.create(x,y,'coin');
+            this.coins.create(x,y,'coin');
             this.coins.forEach(function(coin) {
                 coin.animations.add('effect', [0, 1, 2, 3], 5, true);
                 coin.animations.play('effect');
@@ -94,7 +105,12 @@ var mainState = {
                 coin.body.bounce.y = 0.5;
             });
         }
-    }
+    },
+    collectCoin: function(player, coin) {
+        coin.destroy();
+        this.score += 10;
+        this.scoreText.text = 'Score : ' + this.score;
+    },
 }
 
 

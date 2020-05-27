@@ -2,7 +2,7 @@ var mainState = {
     preload: function() {
         game.load.image('devahoy', './assets/logo.png');
         game.load.image('ground', 'assets/ground.png');
-        game.load.spritesheet('player', 'assets/warrior_m.png', 32, 36);
+        game.load.spritesheet('player', 'assets/red_man.png', 32, 36);
         game.load.spritesheet('coin', 'assets/coins.png', 40, 44, 4);
     },
     
@@ -29,6 +29,10 @@ var mainState = {
         var top = this.myWorld.create(800, 350 -32, 'ground');
         top.scale.setTo(0.3, 1);
         top.body.immovable = true;
+
+        var space = this.myWorld.create(950, 250 -32, 'ground');
+        space.body.immovable = true;      
+
         game.stage.backgroundColor = '#7dbcdf';
         // game.add.sprite(0, 0, 'devahoy').anchor.setTo(0, 0); 
 
